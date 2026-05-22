@@ -18,14 +18,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 同时生成 index.json (备用) 和完美的 tvbox.json (给 TVBox 直连)
+      # 自动生成 index.json 和标准的 tvbox.json
       - name: Generate JSON Indexes
         run: |
           node -e "
           const fs = require('fs');
           const path = require('path');
           
-          // 1. 扫描所有本地爬虫分类
           const omniResult = {};
           fs.readdirSync('.').forEach(dir => {
             if (fs.statSync(dir).isDirectory() && !dir.startsWith('.') && dir !== 'node_modules') {
@@ -40,22 +39,19 @@ jobs:
           });
           fs.writeFileSync('index.json', JSON.stringify(omniResult, null, 2));
           
-          // 2. 组装成 TVBox 100% 能看懂的标准单文件格式
           const tvboxConfig = {
-            // 这里使用全网最通用、兼容性最强的公共 JS 爬虫引擎包 (JAR)
             spider: 'https://raw.gitmirror.com/FongMi/Release/main/spider/release/spider.jar',
             sites: [],
             lives: [
               {
                 name: '直播源',
                 type: 0,
-                url: 'https://iptv.djsb.hidns.vip/配置/筛选/duoduo.json', // 自动关联你仓库里的直播配置
+                url: 'https://iptv.djsb.hidns.vip/配置/筛选/duoduo.json',
                 playerType: 1
               }
             ]
           };
           
-          // 将你仓库里的所有 JS 爬虫，整整齐齐地塞进 TVBox 的 sites 点播源里
           Object.keys(omniResult).forEach(category => {
             omniResult[category].forEach(item => {
               tvboxConfig.sites.push({
@@ -75,9 +71,19 @@ jobs:
           console.log('TVBox 专属直链接口 tvbox.json 已经完美出炉！');
           "
 
+      # 提交回仓库
       - name: Commit and Push Changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add index.json tvbox.json
           git diff --quiet && git diff --staged --quiet || (git commit -m "纯云端自动化：发布专属 TVBox 接口" && git push)
+
+      # 🔥【新增步骤】直接绕过 Git 监听，由 GitHub 强行通知 Cloudflare 立即发布更新
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }} # 需要你在 GitHub 仓库设置里添加你的 CF 令牌
+          accountId: ${{ secrets.CF_ACCOUNT_ID }} # 你的 CF 账户 ID
+          projectName: 'iptv-omnibox-spider' # 你的 CF Pages 项目名称
+          directory: '.' # 推送根目录下所有生成的文件
