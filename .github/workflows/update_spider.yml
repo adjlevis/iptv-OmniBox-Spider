@@ -1,41 +1,49 @@
-name: Daily IPTV Update
+name: Generate OmniBox Index
 
-# 1. 触发条件
 on:
-  schedule:
-    - cron: '0 2 * * *' # 每天 UTC 时间 02:00 自动运行 (北京时间 10:00)
-  workflow_dispatch: # 允许你在 GitHub 网页端手动点击运行测试
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # 第一步：拉取仓库代码（解决你的 No such file 错误）
-      - name: Checkout repository
+      - name: Checkout Code
         uses: actions/checkout@v4
-        
-      # 第二步：设置 Python 环境
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10' # 建议与原项目 Dockerfile 中的版本保持一致
-          
-      # 第三步：安装依赖（假设项目有 requirements.txt）
-      - name: Install dependencies
+
+      - name: Generate JSON Index
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          node -e "
+          const fs = require('fs');
+          const path = require('path');
+          const result = {};
           
-      # 第四步：运行爬虫程序 (注意这里的路径是否正确)
-      - name: Run Spider
-        run: |
-          python spider.py
+          fs.readdirSync('.').forEach(dir => {
+            // 扫描所有非隐藏文件夹
+            if (fs.statSync(dir).isDirectory() && !dir.startsWith('.') && dir !== 'node_modules') {
+              const files = fs.readdirSync(dir).filter(file => file.endsWith('.js'));
+              if (files.length > 0) {
+                result[dir] = files.map(file => ({
+                  name: path.basename(file, '.js'),
+                  path: \`\${dir}/\${file}\`
+                }));
+              }
+            }
+          });
           
-      # 第五步：将更新后的数据文件推送到仓库
-      - name: Commit and Push changes
+          fs.writeFileSync('index.json', JSON.stringify(result, null, 2));
+          console.log('index.json 生成成功！');
+          "
+
+      - name: Commit and Push Changes
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add .
-          # 如果有文件变更，则提交并推送；如果没有变更则跳过，避免报错
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update IPTV data" && git push)
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.json
+          // 如果没有文件变化则不提交，防止死循环
+          git diff --quiet && git diff --staged --quiet || (git commit -m "自动更新爬虫索引文件" && git push)
