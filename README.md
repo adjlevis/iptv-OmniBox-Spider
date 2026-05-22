@@ -8,7 +8,8 @@
 
 若相关内容侵犯了您的合法权益，请及时联系处理，本项目将在核实后尽快移除或调整相关内容。
 
-一键部署Cf
+一键部署Cloudflare 的 CDN
+
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/adjlevis/iptv-OmniBox-Spider)
 
 
