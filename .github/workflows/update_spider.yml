@@ -1,64 +1,72 @@
-name: Generate OmniBox Index
+name: Generate OmniBox and TVBox Index
 
 on:
   push:
     branches:
-      - main  # 当你往仓库里丢新爬虫或者改动代码并推送到 main 分支时，立刻触发更新
-  workflow_dispatch: # 允许你在 GitHub 网页上随时点击按钮手动刷新
+      - main
+  workflow_dispatch:
   schedule:
-    # 每天北京时间凌晨 04:00 自动在云端开机检查并刷新索引 (对应 UTC 时间前一天 20:00)
     - cron: '0 20 * * *'
 
 permissions:
-  contents: write # 必须赋予 Action 机器人把生成的 index.json 推送回仓库的写入权限
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # 第一步：拉取仓库中的全部最新的爬虫文件夹和 JS 代码
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 第二步：运行内置的 Node.js，执行核心的全量扫描和索引生成逻辑
-      - name: Generate JSON Index
+      # 同时生成 index.json (给后台看) 和 tvbox.json (给 TVBox 直连看)
+      - name: Generate JSON Indexes
         run: |
           node -e "
           const fs = require('fs');
           const path = require('path');
-          const result = {};
           
-          // 读取根目录下所有的文件和文件夹
+          // 1. 先生成原有的 index.json
+          const omniResult = {};
           fs.readdirSync('.').forEach(dir => {
-            // 只处理非隐藏、非 node_modules 的“真实文件夹”
             if (fs.statSync(dir).isDirectory() && !dir.startsWith('.') && dir !== 'node_modules') {
-              // 筛选出该分类文件夹下所有以 .js 结尾的爬虫脚本
               const files = fs.readdirSync(dir).filter(file => file.endsWith('.js'));
-              
               if (files.length > 0) {
-                // 将分类名称作为主键，完美排版该分类下的每一个脚本
-                result[dir] = files.map(file => ({
+                omniResult[dir] = files.map(file => ({
                   name: path.basename(file, '.js'),
                   path: \`\${dir}/\${file}\`
                 }));
               }
             }
           });
+          fs.writeFileSync('index.json', JSON.stringify(omniResult, null, 2));
           
-          // 将排版好的 JSON 字典整整齐齐地写入到根目录下的 index.json 文件中（缩进2空格，易读）
-          fs.writeFileSync('index.json', JSON.stringify(result, null, 2));
-          console.log('🎉 恭喜！index.json 影视爬虫索引文件已在云端顺利生成！');
+          // 2. 转换为 TVBox 标准单文件配置格式
+          const tvboxConfig = {
+            spider: 'https://iptv.djsb.hidns.vip/jar/custom_spider.jar', // 如果有自定义jar可以替换，没有可保持空架子
+            sites: [],
+            lives: []
+          };
+          
+          // 把扫描到的所有 JS 爬虫组装成 TVBox 的 sites 节点
+          Object.keys(omniResult).forEach(category => {
+            omniResult[category].forEach(item => {
+              tvboxConfig.sites.push({
+                key: item.name,
+                name: \`\${category} | \${item.name}\`,
+                type: 3,
+                api: \`csp_\${item.name}\`,
+                ext: \`https://iptv.djsb.hidns.vip/\${item.path}\`
+              });
+            });
+          });
+          
+          fs.writeFileSync('tvbox.json', JSON.stringify(tvboxConfig, null, 2));
+          console.log('index.json 和 tvbox.json 均已完美生成！');
           "
 
-      # 第三步：防死循环检查，并自动将更新后的 index.json 提交回你的 GitHub 仓库
       - name: Commit and Push Changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # 将生成的 index.json 标记准备提交
-          git add index.json
-          
-          # 防无用提交机制：只有当 index.json 内容确实发生改变（比如你增删了爬虫）时才提交
-          # 如果内容没变则自动静默跳过，绝不会导致无谓的死循环推送
-          git diff --quiet && git diff --staged --quiet || (git commit -m "定时任务：自动更新全量影视爬虫索引" && git push)
+          git add index.json tvbox.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "自动更新 OmniBox & TVBox 接口" && git push)
