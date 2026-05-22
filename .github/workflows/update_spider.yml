@@ -1,53 +1,41 @@
-name: 定时更新爬虫数据
+name: Daily IPTV Update
 
-# 触发器设置：手动触发 + 定时执行
+# 1. 触发条件
 on:
-  # workflow_dispatch: 允许你随时在 GitHub Actions 界面手动点击运行[reference:3]
-  workflow_dispatch:
-  # schedule: 设置定时运行
-  # ─ cron 语法：依次是 分钟 小时 日 月 星期
-  # - cron: '0 */6 * * *' # 每天 UTC 时间 0:00, 6:00, 12:00, 18:00 运行（每6小时一次）[reference:4]
   schedule:
-    - cron: '0 */6 * * *'
-# 如果你希望每天只运行两次，可以将上述 cron 行替换为下面这一行（每天 UTC 2:00 和 14:00）：
-#   - cron: '0 2,14 * * *'
+    - cron: '0 2 * * *' # 每天 UTC 时间 02:00 自动运行 (北京时间 10:00)
+  workflow_dispatch: # 允许你在 GitHub 网页端手动点击运行测试
 
 jobs:
-  update:
-    # 运行环境：使用 GitHub 免费提供的 Ubuntu 虚拟机
+  build:
     runs-on: ubuntu-latest
     steps:
-      # 1. 拉取代码仓库
-      - name: 拉取仓库代码
+      # 第一步：拉取仓库代码（解决你的 No such file 错误）
+      - name: Checkout repository
         uses: actions/checkout@v4
-
-      # 2. 设置 Python 环境（如果爬虫是 Python 写的）
-      - name: 配置 Python 环境
+        
+      # 第二步：设置 Python 环境
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'  # 根据你项目需要的 Python 版本填写[reference:5]
-
-      # 3. 安装项目依赖
-      - name: 安装项目依赖
+          python-version: '3.10' # 建议与原项目 Dockerfile 中的版本保持一致
+          
+      # 第三步：安装依赖（假设项目有 requirements.txt）
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-
-      # 4. 运行核心爬虫脚本（这里需要根据你的项目实际情况修改）
-      - name: 运行 OmniBox 爬虫
+          pip install -r requirements.txt
+          
+      # 第四步：运行爬虫程序 (注意这里的路径是否正确)
+      - name: Run Spider
         run: |
-          # 假设你的项目入口在根目录下，名为 spider.py
           python spider.py
-
-      # 5. 将更新的文件提交并推送回仓库
-      - name: 提交并推送更新
+          
+      # 第五步：将更新后的数据文件推送到仓库
+      - name: Commit and Push changes
         run: |
-          # 设置 git 用户信息，以便提交
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # 添加所有变更
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
           git add .
-          # 提交变更（如果没有变更，此命令会失败，我们需要它继续）
-          git commit -m "自动更新: 爬虫定时抓取数据" || exit 0
-          # 推送到仓库（这里使用我们配置的 Secrets.PERSONAL_TOKEN 来获取写入权限）[reference:6]
-          git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+          # 如果有文件变更，则提交并推送；如果没有变更则跳过，避免报错
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update IPTV data" && git push)
