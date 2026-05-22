@@ -2,19 +2,361 @@
   "spider": "https://raw.gitmirror.com/FongMi/Release/main/spider/release/spider.jar",
   "sites": [
     {
-      "key": "豆瓣",
-      "name": "豆瓣热搜 🌟",
+      "key": "模板一",
+      "name": "Emby 🌟 模板一",
       "type": 3,
-      "api": "csp_Douban",
-      "searchable": 0,
-      "quickSearch": 0,
-      "filterable": 0
+      "api": "csp_模板一",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/Emby/模板一.js"
     },
     {
-      "key": "直播",
-      "name": "直播测试 🌟",
+      "key": "模板二",
+      "name": "Emby 🌟 模板二",
+      "type": 3,
+      "api": "csp_模板二",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/Emby/模板二.js"
+    },
+    {
+      "key": "girigiri爱动漫",
+      "name": "动漫 🌟 girigiri爱动漫",
+      "type": 3,
+      "api": "csp_girigiri爱动漫",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/动漫/girigiri爱动漫.js"
+    },
+    {
+      "key": "嗷呜动漫",
+      "name": "动漫 🌟 嗷呜动漫",
+      "type": 3,
+      "api": "csp_嗷呜动漫",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/动漫/嗷呜动漫.js"
+    },
+    {
+      "key": "樱花动漫",
+      "name": "动漫 🌟 樱花动漫",
+      "type": 3,
+      "api": "csp_樱花动漫",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/动漫/樱花动漫.js"
+    },
+    {
+      "key": "稀饭动漫",
+      "name": "动漫 🌟 稀饭动漫",
+      "type": 3,
+      "api": "csp_稀饭动漫",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/动漫/稀饭动漫.js"
+    },
+    {
+      "key": "博看听书",
+      "name": "听书 🌟 博看听书",
+      "type": 3,
+      "api": "csp_博看听书",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/听书/博看听书.js"
+    },
+    {
+      "key": "听友FM",
+      "name": "听书 🌟 听友FM",
+      "type": 3,
+      "api": "csp_听友FM",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/听书/听友FM.js"
+    },
+    {
+      "key": "番茄畅听",
+      "name": "听书 🌟 番茄畅听",
+      "type": 3,
+      "api": "csp_番茄畅听",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/听书/番茄畅听.js"
+    },
+    {
+      "key": "酷我听书",
+      "name": "听书 🌟 酷我听书",
+      "type": 3,
+      "api": "csp_酷我听书",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/听书/酷我听书.js"
+    },
+    {
+      "key": "WebDAV",
+      "name": "定时任务 🌟 WebDAV",
+      "type": 3,
+      "api": "csp_WebDAV",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/定时任务/WebDAV.js"
+    },
+    {
+      "key": "网盘分享",
+      "name": "定时任务 🌟 网盘分享",
+      "type": 3,
+      "api": "csp_网盘分享",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/定时任务/网盘分享.js"
+    },
+    {
+      "key": "MakkaPakka聚合导航",
+      "name": "导航 🌟 MakkaPakka聚合导航",
+      "type": 3,
+      "api": "csp_MakkaPakka聚合导航",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/导航/MakkaPakka聚合导航.js"
+    },
+    {
+      "key": "豆瓣推荐",
+      "name": "导航 🌟 豆瓣推荐",
+      "type": 3,
+      "api": "csp_豆瓣推荐",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/导航/豆瓣推荐.js"
+    },
+    {
+      "key": "哔哩教育",
+      "name": "教育 🌟 哔哩教育",
+      "type": 3,
+      "api": "csp_哔哩教育",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/教育/哔哩教育.js"
+    },
+    {
+      "key": "贝乐虎",
+      "name": "教育 🌟 贝乐虎",
+      "type": 3,
+      "api": "csp_贝乐虎",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/教育/贝乐虎.js"
+    },
+    {
+      "key": "Jellyfin",
+      "name": "流媒体 🌟 Jellyfin",
+      "type": 3,
+      "api": "csp_Jellyfin",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/流媒体/Jellyfin.js"
+    },
+    {
+      "key": "Plex",
+      "name": "流媒体 🌟 Plex",
+      "type": 3,
+      "api": "csp_Plex",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/流媒体/Plex.js"
+    },
+    {
+      "key": "YouTube",
+      "name": "流媒体 🌟 YouTube",
+      "type": 3,
+      "api": "csp_YouTube",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/流媒体/YouTube.js"
+    },
+    {
+      "key": "飞牛",
+      "name": "流媒体 🌟 飞牛",
+      "type": 3,
+      "api": "csp_飞牛",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/流媒体/飞牛.js"
+    },
+    {
+      "key": "YY轮播",
+      "name": "直播 🌟 YY轮播",
+      "type": 3,
+      "api": "csp_YY轮播",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/直播/YY轮播.js"
+    },
+    {
+      "key": "抖音直播",
+      "name": "直播 🌟 抖音直播",
+      "type": 3,
+      "api": "csp_抖音直播",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/直播/抖音直播.js"
+    },
+    {
+      "key": "斗鱼直播",
+      "name": "直播 🌟 斗鱼直播",
+      "type": 3,
+      "api": "csp_斗鱼直播",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/直播/斗鱼直播.js"
+    },
+    {
+      "key": "虎牙直播",
+      "name": "直播 🌟 虎牙直播",
+      "type": 3,
+      "api": "csp_虎牙直播",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/直播/虎牙直播.js"
+    },
+    {
+      "key": "嘟嘟短剧",
+      "name": "短剧 🌟 嘟嘟短剧",
+      "type": 3,
+      "api": "csp_嘟嘟短剧",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/短剧/嘟嘟短剧.js"
+    },
+    {
+      "key": "星星短剧",
+      "name": "短剧 🌟 星星短剧",
+      "type": 3,
+      "api": "csp_星星短剧",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/短剧/星星短剧.js"
+    },
+    {
+      "key": "河马短剧",
+      "name": "短剧 🌟 河马短剧",
+      "type": 3,
+      "api": "csp_河马短剧",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/短剧/河马短剧.js"
+    },
+    {
+      "key": "短剧粉",
+      "name": "短剧 🌟 短剧粉",
+      "type": 3,
+      "api": "csp_短剧粉",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/短剧/短剧粉.js"
+    },
+    {
+      "key": "短剧网",
+      "name": "短剧 🌟 短剧网",
+      "type": 3,
+      "api": "csp_短剧网",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/短剧/短剧网.js"
+    },
+    {
+      "key": "短剧聚合",
+      "name": "短剧 🌟 短剧聚合",
+      "type": 3,
+      "api": "csp_短剧聚合",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/短剧/短剧聚合.js"
+    },
+    {
+      "key": "哔哩大全",
+      "name": "综合 🌟 哔哩大全",
+      "type": 3,
+      "api": "csp_哔哩大全",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/综合/哔哩大全.js"
+    },
+    {
+      "key": "DJ音乐",
+      "name": "音乐 🌟 DJ音乐",
+      "type": 3,
+      "api": "csp_DJ音乐",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/音乐/DJ音乐.js"
+    },
+    {
+      "key": "世纪音乐",
+      "name": "音乐 🌟 世纪音乐",
+      "type": 3,
+      "api": "csp_世纪音乐",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/音乐/世纪音乐.js"
+    },
+    {
+      "key": "枫叶音乐",
+      "name": "音乐 🌟 枫叶音乐",
+      "type": 3,
+      "api": "csp_枫叶音乐",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/音乐/枫叶音乐.js"
+    },
+    {
+      "key": "芸芸音乐",
+      "name": "音乐 🌟 芸芸音乐",
+      "type": 3,
+      "api": "csp_芸芸音乐",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://iptv.djsb.hidns.vip/音乐/芸芸音乐.js"
+    }
+  ],
+  "lives": [
+    {
+      "name": "直播源",
       "type": 0,
-      "url": "http://tonkiang.us/hot.php",
+      "url": "https://iptv.djsb.hidns.vip/配置/筛选/duoduo.json",
       "playerType": 1
     }
   ]
