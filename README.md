@@ -8,6 +8,10 @@
 
 若相关内容侵犯了您的合法权益，请及时联系处理，本项目将在核实后尽快移除或调整相关内容。
 
+一键部署Cf
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/adjlevis/iptv-OmniBox-Spider)
+
+
 ## 友情链接
 
 - [OmniBox-Spider-Skills](https://github.com/Silent1566/OmniBox-Spider-Skills) - 面向 OmniBox 爬虫开发的技能仓库，提供可复用的技能说明、规则约束与结构化参考文档，帮助开发者更快完成爬虫源的编写、调试、回归检查与持续维护。
