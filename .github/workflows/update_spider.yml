@@ -3,19 +3,21 @@ name: Generate OmniBox Index
 on:
   push:
     branches:
-      - main
-  workflow_dispatch:
+      - main  # 如果你的主分支叫 master，请把 main 改为 master
+  workflow_dispatch: # 允许你手动点击运行
 
 permissions:
-  contents: write
+  contents: write # 赋予 Action 把生成的 index.json 推送回仓库的权限
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # 1. 拉取仓库中的全部 JS 爬虫代码
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # 2. 运行 Node.js 脚本，扫描文件夹并生成 index.json
       - name: Generate JSON Index
         run: |
           node -e "
@@ -24,7 +26,7 @@ jobs:
           const result = {};
           
           fs.readdirSync('.').forEach(dir => {
-            // 扫描所有非隐藏文件夹
+            // 扫描所有非隐藏文件夹（排除了 .github 等特殊文件夹）
             if (fs.statSync(dir).isDirectory() && !dir.startsWith('.') && dir !== 'node_modules') {
               const files = fs.readdirSync(dir).filter(file => file.endsWith('.js'));
               if (files.length > 0) {
@@ -37,13 +39,13 @@ jobs:
           });
           
           fs.writeFileSync('index.json', JSON.stringify(result, null, 2));
-          console.log('index.json 生成成功！');
+          console.log('index.json 索引生成成功！');
           "
 
+      # 3. 把生成的 index.json 提交回你的 GitHub 仓库
       - name: Commit and Push Changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add index.json
-          // 如果没有文件变化则不提交，防止死循环
           git diff --quiet && git diff --staged --quiet || (git commit -m "自动更新爬虫索引文件" && git push)
